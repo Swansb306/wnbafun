@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Wed Jun 11 16:09:45 2025
-
+pip install pandas numpy matplotlib scikit-learn statsmodels
 @author: bswan work
 """ 
 'This project is to try to predict winners of wnba games.'
@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 import statsmodels.api as sm
+pd.set_option('display.max_columns', None)
 df = pd.read_csv("C:\\Users\\bswan work\\Downloads\\WNBA-stats-master\\WNBA-stats-master\\wnba-team-elo-ratings.csv")
 """df.rename(columns={"Date": "date", "Numbers": "check_ins"}, inplace=True)"""
 
@@ -31,7 +32,17 @@ else: df['team1win'] = 0"""
 
 "logit model base model"
 
+"lets do some descriptive statistics"
+import seaborn as sns
+print(df.describe())
+df.value_counts()
 
+
+_ = df.hist(figsize=(20, 14))
+df.isnull().sum()
+
+
+"start modeling"
 train = df.copy()
 test = df.copy()
 train = train.loc[train['season'] < 2016]
@@ -62,6 +73,13 @@ print(result.summary())
 """
 df2['point_diff'] = df2.score1 - df2.score2
 df2['team1win'] = np.where(df2['point_diff'] > 0, 1, 0)
+
+"some quick descriptive stats"
+_ = df2.hist(figsize=(20, 14))
+df2.isnull().sum()
+print(df2.describe())
+print("value counts")
+df2.value_counts()
 
 train = df2.copy()
 test = df2.copy()
