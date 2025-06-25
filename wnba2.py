@@ -81,6 +81,14 @@ print(df2.describe())
 print("value counts")
 df2.value_counts()
 
+_ = sns.scatterplot(
+    x="elo1_pre",
+    y="team1_offense_metric",
+    data=df2,
+    alpha=0.5,
+)
+"plot(scatter1)"
+
 train = df2.copy()
 test = df2.copy()
 train = train.loc[train['season'] < 2016]
