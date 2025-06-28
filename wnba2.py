@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 import statsmodels.api as sm
+import matplotlib.pyplot as plt
 pd.set_option('display.max_columns', None)
 df = pd.read_csv("C:\\Users\\bswan work\\Downloads\\WNBA-stats-master\\WNBA-stats-master\\wnba-team-elo-ratings.csv")
 """df.rename(columns={"Date": "date", "Numbers": "check_ins"}, inplace=True)"""
@@ -81,14 +82,16 @@ print(df2.describe())
 print("value counts")
 df2.value_counts()
 
-_ = sns.scatterplot(
+# %%
+x = sns.scatterplot(
     x="elo1_pre",
     y="team1_offense_metric",
     data=df2,
     alpha=0.5,
 )
-"plot(scatter1)"
-
+# %%
+plt.show(x)
+# %%
 train = df2.copy()
 test = df2.copy()
 train = train.loc[train['season'] < 2016]
@@ -214,3 +217,27 @@ accuracy = model2025w11.score(newx, newy)
 print(f"Accuracy of logistic regression: {accuracy:.3f}")
 
 """
+
+import seaborn as sns
+target_column = "team1win"
+n_samples_to_plot = 10488
+
+"""columns = ["age", "education-num", "hours-per-week"]
+_ = sns.pairplot(
+    data=df2[:n_samples_to_plot],
+    vars=columns,
+    hue=target_column,
+    plot_kws={"alpha": 0.2},
+    height=3,
+    diag_kind="hist",
+    diag_kws={"bins": 30},
+)"""
+
+_ = sns.scatterplot(
+    x="elo1_pre",
+    y="team1_offense_metric",
+    data=df2[:n_samples_to_plot],
+    hue=target_column,
+    alpha=0.5,
+)
+
