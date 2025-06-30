@@ -82,16 +82,16 @@ print(df2.describe())
 print("value counts")
 df2.value_counts()
 
-# %%
+
 x = sns.scatterplot(
     x="elo1_pre",
     y="team1_offense_metric",
     data=df2,
     alpha=0.5,
 )
-# %%
+
 plt.show(x)
-# %%
+
 train = df2.copy()
 test = df2.copy()
 train = train.loc[train['season'] < 2016]
@@ -240,4 +240,13 @@ _ = sns.scatterplot(
     hue=target_column,
     alpha=0.5,
 )
+dfnum = df2[["team1_points_against",	"team2_points_against",	"team1_offense_metric",	"team2_offense_metric",	"score1",	"score2",	"prob1",	"elo1_pre",	"elo2_pre",	"point_diff",	"team1win"]]
+correlationmatrix1 = dfnum.corr()
+print(correlationmatrix1)
 
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(8, 6))
+sns.heatmap(correlationmatrix1, annot=True, cmap='coolwarm', fmt=".2f")
+plt.title('Correlation Matrix Heatmap')
+plt.show()
