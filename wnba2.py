@@ -250,3 +250,32 @@ plt.figure(figsize=(8, 6))
 sns.heatmap(correlationmatrix1, annot=True, cmap='coolwarm', fmt=".2f")
 plt.title('Correlation Matrix Heatmap')
 plt.show()
+
+from sklearn.model_selection import cross_validate
+from sklearn.tree import DecisionTreeRegressor
+
+target = df2['team1win']
+
+tree = DecisionTreeRegressor(random_state=0)
+cv_results = cross_validate(tree, df2, target, n_jobs=2)
+scores = cv_results["test_score"]
+
+print(
+    "R2 score obtained by cross-validation: "
+    f"{scores.mean():.3f} ± {scores.std():.3f}"
+)
+
+from sklearn.ensemble import BaggingRegressor
+
+estimator = DecisionTreeRegressor(random_state=0)
+bagging_regressor = BaggingRegressor(
+    estimator=estimator, n_estimators=20, random_state=0
+)
+
+cv_results = cross_validate(bagging_regressor, df2, target, n_jobs=2)
+scores = cv_results["test_score"]
+
+print(
+    "R2 score obtained by cross-validation: "
+    f"{scores.mean():.3f} ± {scores.std():.3f}"
+)
