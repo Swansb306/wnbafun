@@ -82,7 +82,7 @@ print(df2.describe())
 print("value counts")
 df2.value_counts()
 
-
+"""
 x = sns.scatterplot(
     x="elo1_pre",
     y="team1_offense_metric",
@@ -90,7 +90,7 @@ x = sns.scatterplot(
     alpha=0.5,
 )
 
-plt.show(x)
+plt.show(x)"""
 
 train = df2.copy()
 test = df2.copy()
@@ -218,6 +218,8 @@ print(f"Accuracy of logistic regression: {accuracy:.3f}")
 
 """
 
+onlynumer = df2[['point_diff','team2_points_against', 'team1_offense_metric', 'team2_offense_metric','elo1_pre', 'elo2_pre']]
+
 import seaborn as sns
 target_column = "team1win"
 n_samples_to_plot = 10488
@@ -257,7 +259,7 @@ from sklearn.tree import DecisionTreeRegressor
 target = df2['team1win']
 
 tree = DecisionTreeRegressor(random_state=0)
-cv_results = cross_validate(tree, df2, target, n_jobs=2)
+cv_results = cross_validate(tree, onlynumer, target, n_jobs=2)
 scores = cv_results["test_score"]
 
 print(
@@ -272,7 +274,7 @@ bagging_regressor = BaggingRegressor(
     estimator=estimator, n_estimators=20, random_state=0
 )
 
-cv_results = cross_validate(bagging_regressor, df2, target, n_jobs=2)
+cv_results = cross_validate(bagging_regressor, onlynumer, target, n_jobs=2)
 scores = cv_results["test_score"]
 
 print(
