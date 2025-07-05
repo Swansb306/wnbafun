@@ -10,6 +10,7 @@ print(
     "R2 score obtained by cross-validation: "
     f"{scores.mean():.3f} ± {scores.std():.3f}"
 )
+
 "lets try to create a function that runs and displays ensemble"
 " model results that we can import into other file"
 

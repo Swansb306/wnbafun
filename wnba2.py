@@ -221,7 +221,8 @@ print(f"Accuracy of logistic regression: {accuracy:.3f}")
 onlynumer = df2[['point_diff','team2_points_against', 'team1_offense_metric', 'team2_offense_metric','elo1_pre', 'elo2_pre']]
 
 import seaborn as sns
-target_column = "team1win"
+target_column = int(df2["team1win"])
+
 n_samples_to_plot = 10488
 
 """columns = ["age", "education-num", "hours-per-week"]
@@ -256,6 +257,10 @@ plt.show()
 from sklearn.model_selection import cross_validate
 from sklearn.tree import DecisionTreeRegressor
 
+
+
+
+
 target = df2['team1win']
 
 tree = DecisionTreeRegressor(random_state=0)
@@ -281,3 +286,69 @@ print(
     "R2 score obtained by cross-validation: "
     f"{scores.mean():.3f} ± {scores.std():.3f}"
 )
+"""
+print(
+    "R2 score obtained by cross-validation: "
+    f"{scores.mean():.3f} ± {scores.std():.3f}"
+"need to split between test and train!"
+sns.scatterplot(
+    x=data_train["Feature"], y=target, color="black", alpha=0.5
+)
+plt.plot(data_test["Feature"], y_pred, label="Fitted tree")
+plt.legend()
+_ = plt.title("Predictions by a single decision tree")
+)
+"""
+
+
+
+"need to split into training and testing!"
+
+from sklearn.model_selection import train_test_split
+"""numerical_columns = ["age", "capital-gain", "capital-loss", "hours-per-week"]
+data[numerical_columns]
+data_numeric = data[numerical_columns]
+
+"""
+onlynumer.describe()
+target_column.describe()
+
+data_train, data_test, target_train, target_test = train_test_split(
+    onlynumer, target_column, random_state=42, test_size=0.25
+)
+
+cv_results = cross_validate(bagging_regressor, data_train, target_train, n_jobs=2)
+scores = cv_results["test_score"]
+
+scores.describe()
+
+print(
+    "R2 score obtained by cross-validation: "
+    f"{scores.mean():.3f} ± {scores.std():.3f}"
+)
+
+from sklearn.linear_model import Ridge
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.pipeline import make_pipeline
+
+bagging = BaggingRegressor(
+    estimator=polynomial_regressor,
+    n_estimators=100,
+    random_state=0,
+)
+_ = bagging.fit(data_train, target_train)
+
+
+sns.scatterplot(
+    x=data_train["Feature"], y=target_train, color="black", alpha=0.5
+)
+
+bagged_trees_predictions = bagged_trees.predict(data_test)
+plt.plot(
+    data_test["Feature"],
+    bagged_trees_predictions,
+    color="tab:orange",
+    label="Predictions of ensemble",
+)
+_ = plt.legend()
