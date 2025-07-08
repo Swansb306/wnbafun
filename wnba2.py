@@ -221,7 +221,7 @@ print(f"Accuracy of logistic regression: {accuracy:.3f}")
 onlynumer = df2[['point_diff','team2_points_against', 'team1_offense_metric', 'team2_offense_metric','elo1_pre', 'elo2_pre']]
 
 import seaborn as sns
-target_column = int(df2["team1win"])
+target_column = df2["team1win"]
 
 n_samples_to_plot = 10488
 
@@ -320,7 +320,7 @@ data_train, data_test, target_train, target_test = train_test_split(
 cv_results = cross_validate(bagging_regressor, data_train, target_train, n_jobs=2)
 scores = cv_results["test_score"]
 
-scores.describe()
+
 
 print(
     "R2 score obtained by cross-validation: "
@@ -332,6 +332,14 @@ from sklearn.preprocessing import PolynomialFeatures
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.pipeline import make_pipeline
 
+
+polynomial_regressor = make_pipeline(
+    MinMaxScaler(),
+    PolynomialFeatures(degree=4, include_bias=False),
+    Ridge(alpha=1e-10),
+)
+
+
 bagging = BaggingRegressor(
     estimator=polynomial_regressor,
     n_estimators=100,
@@ -341,12 +349,19 @@ _ = bagging.fit(data_train, target_train)
 
 
 sns.scatterplot(
-    x=data_train["Feature"], y=target_train, color="black", alpha=0.5
+    x=data_train['team1_offense_metric'], y=target_train, color="black", alpha=0.5
 )
+'not sure what x is supposed to be here...hmm'
+
+bagged_trees = BaggingRegressor(
+    estimator=DecisionTreeRegressor(max_depth=3),
+    n_estimators=100,
+)
+_ = bagged_trees.fit(data_train, target_train)
 
 bagged_trees_predictions = bagged_trees.predict(data_test)
 plt.plot(
-    data_test["Feature"],
+    data_test,
     bagged_trees_predictions,
     color="tab:orange",
     label="Predictions of ensemble",
