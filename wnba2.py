@@ -243,6 +243,7 @@ _ = sns.scatterplot(
     hue=target_column,
     alpha=0.5,
 )
+
 dfnum = df2[["team1_points_against",	"team2_points_against",	"team1_offense_metric",	"team2_offense_metric",	"score1",	"score2",	"prob1",	"elo1_pre",	"elo2_pre",	"point_diff",	"team1win"]]
 correlationmatrix1 = dfnum.corr()
 print(correlationmatrix1)
@@ -299,9 +300,6 @@ plt.legend()
 _ = plt.title("Predictions by a single decision tree")
 )
 """
-
-
-
 "need to split into training and testing!"
 
 from sklearn.model_selection import train_test_split
@@ -350,6 +348,14 @@ _ = bagging.fit(data_train, target_train)
 
 sns.scatterplot(
     x=data_train['team1_offense_metric'], y=target_train, color="black", alpha=0.5
+)
+
+sns.scatterplot(
+    x=data_train['team1_offense_metric'], y=data_train['elo1_pre'], color="black", alpha=0.5
+)
+
+sns.scatterplot(
+    x=data_train['team1_offense_metric'], y=data_train['score1'], color="black", alpha=2
 )
 'not sure what x is supposed to be here...hmm'
 
